@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+	
+	<!-- Registers Database ID provider -->
+	<util:properties id="vendorProperties">
+		<prop key="SQL Server">sqlserver</prop>
+		<prop key="DB2">db2</prop>
+		<prop key="Oracle">oracle</prop>
+		<prop key="MySQL">mysql</prop>
+	</util:properties>	
+		
+	<bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider"
+		p:properties-ref="vendorProperties"/>
+	
+	
+	<!-- Registers SQL SessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:typeAliasesPackage="alias"
+		p:typeHandlersPackage="handler"
+		p:mapperLocations="classpath:conf/mapper/*.xml"
+		p:databaseIdProvider-ref="databaseIdProvider"
+		p:dataSource-ref="dataSource">
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration"
+				p:mapUnderscoreToCamelCase="true"/>
+		</property>
+	</bean>
+	
+	<!-- MyBatis DAO configuration -->
+	<mybatis:scan base-package="dao"
+		factory-ref="sqlSessionFactory"
+		annotation="org.springframework.stereotype.Repository"/>
+	
+
+	
+	<!-- Registers transaction manager -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSource" />
+	
+	<tx:annotation-driven/>
+</beans>
