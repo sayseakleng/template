@@ -54,6 +54,7 @@
 	
 	<logger name="org.springframework.security.web" level="DEBUG" additivity="true"/>
 	<logger name="org.apache.http" level="DEBUG" additivity="true"/>
+	<logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="OFF" additivity="true"/>
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT"/>
