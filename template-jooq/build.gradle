@@ -38,6 +38,7 @@ targetCompatibility = 1.8
 
 ext {
 	logbackSpringExtVersion 	= '0.1.4'
+	sfmVersion 					= '3.11.8'
 }
 
 // dependency management
@@ -87,6 +88,7 @@ dependencies {
 	// jooq
 	compile 'org.jooq:jooq'
 	jooqRuntime 'org.mariadb.jdbc:mariadb-java-client'
+	compile "org.simpleflatmapper:sfm-jooq:$sfmVersion"
 	
 	// DB Driver
 	compile 'org.mariadb.jdbc:mariadb-java-client'
