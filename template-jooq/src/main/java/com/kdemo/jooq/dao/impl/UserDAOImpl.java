@@ -34,7 +34,7 @@ public class UserDAOImpl implements UserDAO {
 		
 		// option 1 : with fetch auto ID
 		UsersRecord newRecord = dsl.newRecord(USERS, user);
-		int store = newRecord.store();
+		int store = newRecord.insert();
 		if(store > 0) {
 			user.setId(newRecord.getId());
 		}
