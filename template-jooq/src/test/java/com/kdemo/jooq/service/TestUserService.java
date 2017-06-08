@@ -32,7 +32,7 @@ public class TestUserService {
 	
 	@Test
 	public void testInsert2() throws Exception {
-		Users user = new Users(null, "sok", "F");
+		Users user = new Users(null, "sok1", "F");
 		user.setName("Sok");
 		user.setGender("F");
 		int insert = userService.insert2(user);

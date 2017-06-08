@@ -32,13 +32,19 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public int insert(Users user) {
 		
-		// option 1
+		// option 1 : with fetch auto ID
 		UsersRecord newRecord = dsl.newRecord(USERS, user);
-		return dsl.executeInsert(newRecord);
+		int store = newRecord.store();
+		if(store > 0) {
+			user.setId(newRecord.getId());
+		}
+		return store;
 		
-		/*return dsl.insertInto(USERS, USERS.NAME, USERS.GENDER)
+		// Otion 2
+/*		return dsl.insertInto(USERS, USERS.NAME, USERS.GENDER)
 			.values(user.getName(), user.getGender())
 			.execute();*/
+		
 	}
 
 }
