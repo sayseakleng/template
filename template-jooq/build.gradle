@@ -113,11 +113,25 @@ configurations {
     }
 }
 
-eclipse.wtp.facet {
-	facets = []
-	facet name: 'java', version:"$sourceCompatibility"
-	facet name: 'jst.web', version:"3.1"
-	facet name: 'wst.jsdt.web', version:"1.0"
+eclipse.wtp {
+	facet {
+		facets = []
+		facet name: 'jst.java', version:"$sourceCompatibility"
+		facet name: 'jst.web', version:'3.1'
+		facet name: 'wst.jsdt.web', version:'1.0'
+	}
+	
+	component.file {
+		withXml {
+			it.asNode()'wb-module'[0].children()
+			    .findAll { it.name() == 'dependent-module' }
+			    .findAll { it.attribute('handle').startsWith 'module:/resource' }
+			    .each {
+			        def jarName = it.attribute('handle').tokenize('/').last() + '.jar'
+			        it.attributes().put('archiveName', jarName)
+			     }
+		}
+	}
 }
 eclipse.jdt {
     sourceCompatibility = "$sourceCompatibility"
