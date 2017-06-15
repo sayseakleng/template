@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/logback.xsd">
+	<property name="rootDir" value="template/logs" />
+	<property name="archiveDir" value="${rootDir}/archived" />
+	<property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] [%level] %logger{36} - %msg%n" />
+	
+	<!-- console logger -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${pattern}</pattern>
+    	</encoder>
+	</appender>
+	
+	<!-- info file logger -->
+	<appender name="INFO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${rootDir}/info.log</file>
+		<encoder>
+			<pattern>${pattern}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${archiveDir}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+		    <maxFileSize>100MB</maxFileSize>
+		</rollingPolicy>
+	</appender>
+	
+	<!-- error file logger -->
+	<appender name="ERROR-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${rootDir}/error.log</file>
+		<encoder>
+			<pattern>${pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+		 	<level>ERROR</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${archiveDir}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>10MB</maxFileSize>
+		</rollingPolicy>
+	</appender>
+
+	
+	<!-- Application Loggers -->
+	<logger name="com.kdemo.template" level="ALL" additivity="false">
+		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="INFO-FILE"/>
+		<appender-ref ref="ERROR-FILE"/>
+	</logger>
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core" level="INFO" additivity="true"/>
+	<logger name="org.springframework.beans" level="INFO" additivity="true"/>
+	<logger name="org.springframework.context" level="INFO" additivity="true"/>
+	<logger name="org.springframework.web" level="INFO" additivity="true"/>
+	
+	<logger name="org.springframework.security.web" level="DEBUG" additivity="true"/>
+	<logger name="org.apache.http" level="DEBUG" additivity="true"/>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT"/>
+<!-- 		<appender-ref ref="INFO-FILE"/> -->
+<!-- 		<appender-ref ref="ERROR-FILE"/> -->
+	</root>
+
+</configuration>

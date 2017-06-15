@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+ 
+ 
+	<!-- http://stackoverflow.com/questions/19347350/httpcomponents-poolinghttpclientconnectionmanager-maxperroute-and-maxtotal -->
+	<!-- http://dev.bizo.com/2013/04/sensible-defaults-for-apache-httpclient.html -->
+	<bean id="connectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager"
+		p:maxTotal="50"
+		p:defaultMaxPerRoute="20"/>
+	
+	
+	<!-- Registers IdleConnectionEvictor to evict idle http connections -->
+	<bean class="org.apache.http.impl.client.IdleConnectionEvictor" init-method="start" destroy-method="shutdown"
+		c:connectionManager-ref="connectionManager"
+		c:maxIdleTime="60"
+		c:maxIdleTimeUnit="SECONDS"/>
+	
+
+	<!-- Registers httpClientBuilder -->
+	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClients" factory-method="custom"
+		p:connectionManager-ref="connectionManager"/>
+	
+	<!-- Registers httpClient -->
+	<bean id="httpClient" class="org.apache.http.client.HttpClient" factory-bean="httpClientBuilder" factory-method="build"/>
+
+	
+	<!-- Registers RestTemplate -->
+	<bean class="org.springframework.web.client.RestTemplate">
+		<constructor-arg name="requestFactory">
+			<bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory"
+				c:httpClient-ref="httpClient"
+				p:readTimeout="60000"
+				p:connectTimeout="60000"/>
+		</constructor-arg>
+	</bean>
+
+</beans>
