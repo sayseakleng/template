@@ -38,13 +38,13 @@ targetCompatibility = 1.8
 
 ext {
 	logbackSpringExtVersion 	= '0.1.4'
-	sfmVersion 					= '3.11.8'
+	sfmVersion 					= '3.12'
 }
 
 // dependency management
 dependencyManagement {
     imports {
-        mavenBom 'io.spring.platform:platform-bom:Athens-SR5'
+        mavenBom 'io.spring.platform:platform-bom:Athens-SR6'
     }
 }
 
