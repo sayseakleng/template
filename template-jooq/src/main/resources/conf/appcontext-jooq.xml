@@ -23,7 +23,7 @@
 	
 		
 	<bean id="jooqConfig" class="org.jooq.impl.DefaultConfiguration"
-		p:SQLDialect="MARIADB"
+		p:SQLDialect="#{T(org.jooq.SQLDialect).MARIADB}"
 		p:connectionProvider-ref="connectionProvider"/>
 
     
