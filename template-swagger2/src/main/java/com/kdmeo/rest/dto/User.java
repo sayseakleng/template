@@ -6,17 +6,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.kdmeo.rest.util.Genders;
 
-import io.swagger.annotations.ApiModelProperty;
-
 public class User {
 	
 	private int id;
 	
-	@ApiModelProperty(required = true)
 	@NotEmpty
 	private String name;
 	
-	@ApiModelProperty(required = true)
 	@NotNull
 	private Genders gender;
 	
