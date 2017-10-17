@@ -19,7 +19,11 @@ public class TextServiceImpl implements TextService {
 	@Override
 	public String generate2(String key) {
 		
-		return generate(key);
+		String generate = generate(key);
+		
+		System.out.printf("**** Result = %s %n", generate);
+		
+		return generate;
 	}
 
 }

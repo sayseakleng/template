@@ -10,7 +10,7 @@ public class TextServiceAspect {
 	
 	@Before("execution(* com.kdemo.mvc.service.impl.TextServiceImpl.generate(..)) && args(key)")
 	public void generate(String key) {
-		System.out.println(key);
+		System.out.printf("**** [Aspect] Key = %s %n", key);
 	}
 	
 }
