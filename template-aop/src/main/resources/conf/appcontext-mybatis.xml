@@ -49,6 +49,6 @@
 	<!-- Registers transaction manager -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 		p:dataSource-ref="dataSource" />
-	
-	<tx:annotation-driven/>
+		
+	<tx:annotation-driven mode="aspectj"/>
 </beans>
