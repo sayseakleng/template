@@ -1,6 +1,6 @@
 package com.kdemo.jooq.service;
 
-import static com.kdemo.jooq.domain.Tables.USERS;
+import static com.kdemo.jooq.domain.Tables.USER;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +31,8 @@ public class TestSimpleFlatMapper {
 	public void test() throws SQLException {
 
 		ResultSet fetchResultSet = dsl
-				.select(USERS.ID, USERS.NAME, USERS.GENDER.as("infos_gender"))
-				.from(USERS)
+				.select(USER.ID, USER.NAME, USER.GENDER.as("infos_gender"))
+				.from(USER)
 				.fetchResultSet();
 
 		DynamicJdbcMapper<UserDTO> mapper = JdbcMapperFactory.newInstance()
@@ -61,8 +61,8 @@ public class TestSimpleFlatMapper {
 		dsl.configuration().set(newProvider);
 		
 		List<UserDTO> fetchInto = dsl
-				.select(USERS.ID, USERS.NAME, USERS.GENDER.as("infos_gender"))
-				.from(USERS)
+				.select(USER.ID, USER.NAME, USER.GENDER.as("infos_gender"))
+				.from(USER)
 				.fetchInto(UserDTO.class);
 		
 

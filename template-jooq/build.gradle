@@ -11,8 +11,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
-        classpath 'nu.studer:gradle-jooq-plugin:2.0.6'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
+        classpath 'nu.studer:gradle-jooq-plugin:3.0.2'
     }
 }
  
@@ -37,14 +37,15 @@ targetCompatibility = 1.8
 
 
 ext {
-	logbackSpringExtVersion 	= '0.1.4'
-	sfmVersion 					= '3.12'
+	logbackSpringExtVersion 	= '0.1.5'
+	sfmVersion 					= '6.0.10'
+	jooqVersion 				= '3.11.7'
 }
 
 // dependency management
 dependencyManagement {
     imports {
-        mavenBom 'io.spring.platform:platform-bom:Athens-SR6'
+        mavenBom 'io.spring.platform:platform-bom:Cairo-RELEASE'
     }
 }
 
@@ -86,7 +87,7 @@ dependencies {
 	compile 'joda-time:joda-time'
 	
 	// jooq
-	compile 'org.jooq:jooq'
+	compile "org.jooq:jooq:$jooqVersion"
 	jooqRuntime 'org.mariadb.jdbc:mariadb-java-client'
 	compile "org.simpleflatmapper:sfm-jooq:$sfmVersion"
 	
@@ -142,6 +143,7 @@ eclipse.jdt {
 
 
 // Run the code generator
+// https://www.jooq.org/doc/3.11/manual/code-generation/codegen-configuration/
 // https://www.jooq.org/doc/3.8/manual/code-generation/codegen-advanced/
 task cleanGenerateSampleJooqSchemaSource() {
 	doFirst {}
@@ -161,7 +163,8 @@ gradle.taskGraph.whenReady {
 	}
 }
 jooq {
-   sample(sourceSets.main) {
+	version = "$jooqVersion"
+   	sample(sourceSets.main) {
        jdbc {
            driver = 'org.mariadb.jdbc.Driver'
            url = 'jdbc:mariadb://localhost:3306/jooq'
@@ -170,10 +173,10 @@ jooq {
        }
        generator {
            strategy {
-               name = 'org.jooq.util.DefaultGeneratorStrategy'
+               name = 'org.jooq.codegen.DefaultGeneratorStrategy'
            }
            database {
-               name = 'org.jooq.util.mariadb.MariaDBDatabase'
+               name = 'org.jooq.meta.mariadb.MariaDBDatabase'
                inputSchema = 'jooq'
            }
            generate {
@@ -193,4 +196,15 @@ jooq {
            }
        }
    }
+}
+
+task generateJooq (dependsOn: build) {
+	if(!'generateSampleJooqSchemaSource'.equals(project.gradle.startParameter.taskNames[0])) { 
+    	tasks['generateSampleJooqSchemaSource'].enabled = false
+	}
+}
+task cleanJooq (dependsOn: clean) {
+	if(!'cleanGenerateSampleJooqSchemaSource'.equals(project.gradle.startParameter.taskNames[0])) { 
+		tasks['cleanGenerateSampleJooqSchemaSource'].enabled = false
+	}
 }

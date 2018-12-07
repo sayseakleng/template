@@ -1,6 +1,6 @@
 package com.kdemo.jooq.dao.impl;
 
-import static com.kdemo.jooq.domain.Tables.USERS;
+import static com.kdemo.jooq.domain.Tables.USER;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kdemo.jooq.dao.UserDAO;
-import com.kdemo.jooq.domain.tables.pojos.Users;
-import com.kdemo.jooq.domain.tables.records.UsersRecord;
+import com.kdemo.jooq.domain.tables.pojos.User;
+import com.kdemo.jooq.domain.tables.records.UserRecord;
 
 @Repository
 @Transactional
@@ -22,18 +22,18 @@ public class UserDAOImpl implements UserDAO {
 	
 
 	@Override
-	public List<Users> getUsers() {
+	public List<User> getUsers() {
 			return dsl
-				.select(USERS.fields())
-				.from(USERS)
-				.fetchInto(Users.class);
+				.select(USER.fields())
+				.from(USER)
+				.fetchInto(User.class);
 	}
 
 	@Override
-	public int insert(Users user) {
+	public int insert(User user) {
 		
 		// option 1 : with fetch auto ID
-		UsersRecord newRecord = dsl.newRecord(USERS, user);
+		UserRecord newRecord = dsl.newRecord(USER, user);
 		int store = newRecord.insert();
 		if(store > 0) {
 			user.setId(newRecord.getId());

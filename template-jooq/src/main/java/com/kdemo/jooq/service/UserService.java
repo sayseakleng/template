@@ -2,15 +2,15 @@ package com.kdemo.jooq.service;
 
 import java.util.List;
 
-import com.kdemo.jooq.domain.tables.pojos.Users;
+import com.kdemo.jooq.domain.tables.pojos.User;
 
 
 public interface UserService {
 	
-	List<Users> getUsers();
+	List<User> getUsers();
 	
-	int insert1(Users user);
+	int insert1(User user);
 	
-	int insert2(Users user) throws Exception;
+	int insert2(User user) throws Exception;
 
 }

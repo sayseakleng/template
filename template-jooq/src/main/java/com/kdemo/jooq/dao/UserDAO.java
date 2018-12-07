@@ -2,12 +2,13 @@ package com.kdemo.jooq.dao;
 
 import java.util.List;
 
-import com.kdemo.jooq.domain.tables.pojos.Users;
+import com.kdemo.jooq.domain.tables.pojos.User;
+
 
 public interface UserDAO {
 	
-	List<Users> getUsers();
+	List<User> getUsers();
 	
-	int insert(Users user);
+	int insert(User user);
 	
 }

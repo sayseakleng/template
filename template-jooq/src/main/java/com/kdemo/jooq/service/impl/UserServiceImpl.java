@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kdemo.jooq.dao.UserDAO;
-import com.kdemo.jooq.domain.tables.daos.UsersDao;
-import com.kdemo.jooq.domain.tables.pojos.Users;
+import com.kdemo.jooq.domain.tables.daos.UserDao;
+import com.kdemo.jooq.domain.tables.pojos.User;
 import com.kdemo.jooq.service.UserService;
 
 @Service
@@ -19,15 +19,15 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDAO;
 	
 	@Autowired
-	private UsersDao dao;
+	private UserDao dao;
 
 	@Override
-	public List<Users> getUsers() {
+	public List<User> getUsers() {
 		return userDAO.getUsers();
 	}
 
 	@Override
-	public int insert1(Users user) {
+	public int insert1(User user) {
 		// option 1
 		dao.insert(user);
 		return 1;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int insert2(Users user) throws Exception {
+	public int insert2(User user) throws Exception {
 		int insert = userDAO.insert(user);
 		
 		if(insert > 0) {
